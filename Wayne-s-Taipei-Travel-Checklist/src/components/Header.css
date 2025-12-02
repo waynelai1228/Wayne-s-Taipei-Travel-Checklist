@@ -1,0 +1,48 @@
+/* Header.css */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* centers title horizontally */
+  height: 160px; /* space for large logo */
+  padding: 0 20px;
+  background: white;
+  border-bottom: 2px solid #eee;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.header-title {
+  font-size: 2rem;
+  text-align: center;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .header {
+    height: 120px;
+  }
+
+  .header-title {
+    font-size: 1.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    height: 100px;
+  }
+
+  .header-title {
+    font-size: 1.3rem;
+  }
+}
+
+/* Wrapper for logo inside header */
+.logo-wrapper {
+  position: absolute;
+  left: 20px;
+  display: flex;
+  align-items: center;
+}

@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "label": "Passport",
+    "checked": false
+  },
+  {
+    "id": 2,
+    "label": "Boarding pass",
+    "checked": false
+  },
+  {
+    "id": 3,
+    "label": "Phone charger",
+    "checked": false
+  },
+  {
+    "id": 4,
+    "label": "Travel insurance docs",
+    "checked": false
+  }
+]

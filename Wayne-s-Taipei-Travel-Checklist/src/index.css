@@ -1,0 +1,49 @@
+/* index.css - global reset and base styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  background-color: #f9f9f9;
+  color: #212121;
+}
+
+/* Links */
+a {
+  color: #646cff;
+  text-decoration: none;
+}
+
+  a:hover {
+    color: #535bf2;
+  }
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-weight: 600;
+}
+
+/* Buttons reset */
+button {
+  all: unset;
+  cursor: pointer;
+  font-family: inherit;
+  border-radius: 4px;
+}
+
+/* Utility class for centering elements */
+.centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

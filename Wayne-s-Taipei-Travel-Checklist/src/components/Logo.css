@@ -1,0 +1,25 @@
+/* Logo.css */
+.logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-img {
+  height: 120px; /* adjust size as desired */
+  width: auto;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .logo-img {
+    height: 80px;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo-img {
+    height: 60px;
+  }
+}
