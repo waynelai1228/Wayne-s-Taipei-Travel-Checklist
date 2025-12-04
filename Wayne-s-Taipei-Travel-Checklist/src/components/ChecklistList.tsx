@@ -7,6 +7,7 @@ interface ChecklistListProps {
   onToggle: (id: number) => void;
   onDelete: (id: number) => void;
   onNotesChange: (id: number, notes: string) => void;
+  editMode: boolean;
 }
 
 export default function ChecklistList({
@@ -14,6 +15,7 @@ export default function ChecklistList({
   onToggle,
   onDelete,
   onNotesChange,
+  editMode,
 }: ChecklistListProps) {
   return (
     <div className="checklist-list">
@@ -26,8 +28,10 @@ export default function ChecklistList({
           onToggle={onToggle}
           onDelete={onDelete}
           onNotesChange={onNotesChange}
+          editMode={editMode}  // pass to item
         />
       ))}
     </div>
   );
 }
+

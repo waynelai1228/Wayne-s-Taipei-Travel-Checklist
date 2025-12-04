@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import type { ChecklistItem } from "../types/ChecklistItem";
 import expandIcon from "../assets/expand_sign.svg";
 
@@ -8,6 +8,7 @@ interface ChecklistItemProps {
   onToggle: (id: number) => void;
   onDelete: (id: number) => void;
   onNotesChange: (id: number, notes: string) => void;
+  editMode: boolean;
 }
 
 export default function ChecklistItemComponent({
@@ -15,6 +16,7 @@ export default function ChecklistItemComponent({
   onToggle,
   onDelete,
   onNotesChange,
+  editMode,
 }: ChecklistItemProps) {
   const [notes, setNotes] = useState(item.notes || "");
   const [open, setOpen] = useState(false);
@@ -28,17 +30,15 @@ export default function ChecklistItemComponent({
   return (
     <div className="checklist-item">
       <div className="item-header">
-        {/* Checkbox */}
         <input
           type="checkbox"
           checked={item.checked}
           onChange={() => onToggle(item.id)}
+          disabled={!editMode} // make read-only when not editing
         />
 
-        {/* Label and expand icon */}
         <div className="item-label" onClick={() => setOpen(!open)}>
           <span className={item.checked ? "checked" : ""}>{item.label}</span>
-
           <img
             src={expandIcon}
             alt="Expand"
@@ -46,14 +46,11 @@ export default function ChecklistItemComponent({
           />
         </div>
 
-        {/* Delete button */}
-        <button
-          className="delete-btn"
-          aria-label="Delete item"
-          onClick={() => onDelete(item.id)}
-        >
-          X
-        </button>
+        {editMode && (
+          <button className="delete-btn" onClick={() => onDelete(item.id)}>
+            X
+          </button>
+        )}
       </div>
 
       {open && (
@@ -84,7 +81,8 @@ export default function ChecklistItemComponent({
             <textarea
               className="notes-textarea"
               value={notes}
-              onChange={handleNotesChange}
+              onChange={(e) => editMode && handleNotesChange(e)}
+              disabled={!editMode} // read-only if not editing
               placeholder="Add notes..."
             />
           </div>
@@ -93,3 +91,4 @@ export default function ChecklistItemComponent({
     </div>
   );
 }
+
