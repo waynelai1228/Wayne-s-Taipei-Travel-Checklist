@@ -44,18 +44,20 @@
 
 /* ChecklistItem */
 .checklist-item {
-  display: flex;
   align-items: center;
-  justify-content: space-between;
   padding: 12px 16px;
   background: white;
   border-radius: 6px;
   border: 1px solid #ddd;
+
+  display: grid;
+  grid-template-areas: 'header' 'details';
 }
 
-  .checklist-item label {
+  .checklist-item .item-label {
     display: flex;
     align-items: center;
+    padding: 10px;
     gap: 10px;
     flex: 1;
     cursor: pointer;
@@ -86,3 +88,117 @@
     .checklist-item button:hover {
       background-color: #d32f2f;
     }
+
+/* Notes textarea styling */
+.item-notes {
+  width: 100%;
+  resize: vertical;
+  min-height: 40px;
+  padding: 6px 8px;
+  font-size: 0.95rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-family: inherit;
+}
+
+  .item-notes:focus {
+    outline: none;
+    border-color: #4caf50;
+    box-shadow: 0 0 3px #4caf50aa;
+  }
+
+/* --- HEADER ROW --- */
+.item-header {
+  grid-area: header;
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+}
+
+/* strikethrough when checked */
+.checked {
+  text-decoration: line-through;
+  color: #777;
+}
+
+/* --- BUTTONS --- */
+.item-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.collapse-btn,
+.delete-btn {
+  border: none;
+  background: #eee;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+  .collapse-btn:hover {
+    background: #ddd;
+  }
+
+.delete-btn {
+  background: #f8d7da;
+  color: #a10000;
+}
+
+  .delete-btn:hover {
+    background: #f5b5bb;
+  }
+
+/* --- EXPANDED DETAILS --- */
+.item-details {
+  grid-area: details;
+  margin-top: 12px;
+  padding: 12px;
+  background: #fafafa;
+  border-radius: 6px;
+  border-left: 3px solid #ccc;
+  
+  width: 100%;
+}
+
+/* --- SCORE TABLE --- */
+.score-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 12px;
+}
+
+  .score-table td {
+    padding: 6px 4px;
+    border-bottom: 1px solid #ddd;
+  }
+
+.score-label {
+  font-weight: 500;
+}
+
+.score-value {
+  text-align: right;
+}
+
+/* --- NOTES SECTION --- */
+.notes-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.notes-label {
+  font-weight: 500;
+}
+
+.notes-textarea {
+  width: 100%;
+  min-height: 70px;
+  resize: vertical;
+  padding: 6px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background: #fff;
+}

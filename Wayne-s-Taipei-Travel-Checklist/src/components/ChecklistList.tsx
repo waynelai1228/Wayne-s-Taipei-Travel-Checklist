@@ -6,12 +6,14 @@ interface ChecklistListProps {
   items: ChecklistItem[];
   onToggle: (id: number) => void;
   onDelete: (id: number) => void;
+  onNotesChange: (id: number, notes: string) => void;
 }
 
 export default function ChecklistList({
   items,
   onToggle,
   onDelete,
+  onNotesChange,
 }: ChecklistListProps) {
   return (
     <div className="checklist-list">
@@ -23,6 +25,7 @@ export default function ChecklistList({
           item={item}
           onToggle={onToggle}
           onDelete={onDelete}
+          onNotesChange={onNotesChange}
         />
       ))}
     </div>

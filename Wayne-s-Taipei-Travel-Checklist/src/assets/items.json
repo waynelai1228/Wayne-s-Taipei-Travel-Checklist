@@ -1,22 +1,72 @@
 [
   {
     "id": 1,
-    "label": "Passport",
-    "checked": false
+    "label": "Taipei 101",
+    "checked": false,
+    "notes": "",
+    "scenicScore": 10,
+    "romanceScore": 9,
+    "educationalScore": 6,
+    "convenienceScore": 10
   },
   {
     "id": 2,
-    "label": "Boarding pass",
-    "checked": false
+    "label": "Teapot Mountain",
+    "checked": false,
+    "notes": "",
+    "scenicScore": 8,
+    "romanceScore": 6,
+    "educationalScore": 3,
+    "convenienceScore": 6
   },
   {
     "id": 3,
-    "label": "Phone charger",
-    "checked": false
+    "label": "Palace Museum",
+    "checked": false,
+    "notes": "",
+    "scenicScore": 6,
+    "romanceScore": 3,
+    "educationalScore": 10,
+    "convenienceScore": 8
   },
   {
     "id": 4,
-    "label": "Travel insurance docs",
-    "checked": false
+    "label": "Taiwan Museum",
+    "checked": false,
+    "notes": "",
+    "scenicScore": 7,
+    "romanceScore": 5,
+    "educationalScore": 10,
+    "convenienceScore": 10
+  },
+  {
+    "id": 5,
+    "label": "YangMing Mountain",
+    "checked": false,
+    "notes": "Not recommended in Winter or cloudy weather",
+    "scenicScore": 10,
+    "romanceScore": 10,
+    "educationalScore": 6,
+    "convenienceScore": 6
+  },
+  {
+    "id": 6,
+    "label": "Elephant Mountain",
+    "checked": false,
+    "notes": "",
+    "scenicScore": 10,
+    "romanceScore": 8,
+    "educationalScore": 1,
+    "convenienceScore": 10
+  },
+  {
+    "id": 7,
+    "label": "Riverside Park",
+    "checked": false,
+    "notes": "",
+    "scenicScore": 8,
+    "romanceScore": 10,
+    "educationalScore": 1,
+    "convenienceScore": 10
   }
 ]
