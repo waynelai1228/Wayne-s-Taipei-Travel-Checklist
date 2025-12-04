@@ -1,17 +1,27 @@
 [
   {
     "id": 1,
-    "label": "Taipei 101",
+    "label": "Look at the giant ball on top of Taipei 101",
     "checked": false,
     "notes": "",
-    "scenicScore": 10,
-    "romanceScore": 9,
-    "educationalScore": 6,
+    "scenicScore": 3,
+    "romanceScore": 0,
+    "educationalScore": 7,
     "convenienceScore": 10
   },
   {
     "id": 2,
-    "label": "Teapot Mountain",
+    "label": "Have a meal on top of Taipei 101",
+    "checked": false,
+    "notes": "",
+    "scenicScore": 10,
+    "romanceScore": 9,
+    "educationalScore": 0,
+    "convenienceScore": 10
+  },
+  {
+    "id": 3,
+    "label": "Climb to the teapot of Teapot Mountain",
     "checked": false,
     "notes": "",
     "scenicScore": 8,
@@ -20,18 +30,38 @@
     "convenienceScore": 6
   },
   {
-    "id": 3,
-    "label": "Palace Museum",
+    "id": 4,
+    "label": "Get rich at New Taipei Gold Museum",
     "checked": false,
     "notes": "",
+    "scenicScore": 3,
+    "romanceScore": 3,
+    "educationalScore": 8,
+    "convenienceScore": 8
+  },
+  {
+    "id": 5,
+    "label": "Be a basic instagram influencer and get a photo at that famous tea house in Jiufeng",
+    "checked": false,
+    "notes": "",
+    "scenicScore": 10,
+    "romanceScore": 10,
+    "educationalScore": 2,
+    "convenienceScore": 8
+  },
+  {
+    "id": 6,
+    "label": "Play the detective game at National Palace Museum",
+    "checked": false,
+    "notes": "Only suitable for people who know Chinese",
     "scenicScore": 6,
     "romanceScore": 3,
     "educationalScore": 10,
     "convenienceScore": 8
   },
   {
-    "id": 4,
-    "label": "Taiwan Museum",
+    "id": 7,
+    "label": "Learn random facts about Taiwan at Taiwan Museum",
     "checked": false,
     "notes": "",
     "scenicScore": 7,
@@ -40,8 +70,8 @@
     "convenienceScore": 10
   },
   {
-    "id": 5,
-    "label": "YangMing Mountain",
+    "id": 8,
+    "label": "Get rained on at YangMing Mountain or get lucky and see the best view of Taipei",
     "checked": false,
     "notes": "Not recommended in Winter or cloudy weather",
     "scenicScore": 10,
@@ -50,8 +80,8 @@
     "convenienceScore": 6
   },
   {
-    "id": 6,
-    "label": "Elephant Mountain",
+    "id": 9,
+    "label": "Take a picture at the heart sign on Elephant Mountain",
     "checked": false,
     "notes": "",
     "scenicScore": 10,
@@ -60,8 +90,8 @@
     "convenienceScore": 10
   },
   {
-    "id": 7,
-    "label": "Riverside Park",
+    "id": 10,
+    "label": "Watch sunset on the Kishu An bridge at riverside park",
     "checked": false,
     "notes": "",
     "scenicScore": 8,

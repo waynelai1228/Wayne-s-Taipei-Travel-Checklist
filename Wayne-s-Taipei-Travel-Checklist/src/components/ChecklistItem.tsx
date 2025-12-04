@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import type { ChecklistItem } from "../types/ChecklistItem";
+import expandIcon from "../assets/expand_sign.svg";
+
 
 interface ChecklistItemProps {
   item: ChecklistItem;
@@ -26,35 +28,32 @@ export default function ChecklistItemComponent({
   return (
     <div className="checklist-item">
       <div className="item-header">
+        {/* Checkbox */}
         <input
           type="checkbox"
           checked={item.checked}
           onChange={() => onToggle(item.id)}
         />
-        <div
-          className="item-label"
-          onClick={() => setOpen(!open)}
-        >
+
+        {/* Label and expand icon */}
+        <div className="item-label" onClick={() => setOpen(!open)}>
           <span className={item.checked ? "checked" : ""}>{item.label}</span>
+
+          <img
+            src={expandIcon}
+            alt="Expand"
+            className={`expand-icon ${open ? "open" : ""}`}
+          />
         </div>
 
-        <div className="item-actions">
-          <button
-            className="collapse-btn"
-            aria-label="Toggle details"
-            onClick={() => setOpen(!open)}
-          >
-            {open ? "^" : "v"}
-          </button>
-
-          <button
-            className="delete-btn"
-            aria-label="Delete item"
-            onClick={() => onDelete(item.id)}
-          >
-            x
-          </button>
-        </div>
+        {/* Delete button */}
+        <button
+          className="delete-btn"
+          aria-label="Delete item"
+          onClick={() => onDelete(item.id)}
+        >
+          X
+        </button>
       </div>
 
       {open && (
