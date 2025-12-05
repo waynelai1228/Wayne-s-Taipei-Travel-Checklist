@@ -8,6 +8,7 @@ interface ChecklistItemProps {
   item: ChecklistItem;
   onToggle: (id: number) => void;
   onDelete: (id: number) => void;
+  onLabelChange: (id: number, newLabel: string) => void;
   onNotesChange: (id: number, notes: string) => void;
   onScoreChange: (id: number, field: ScoreField, value: number) => void;
   editMode: boolean;
@@ -17,6 +18,7 @@ export default function ChecklistItemComponent({
   item,
   onToggle,
   onDelete,
+  onLabelChange,
   onNotesChange,
   onScoreChange,
   editMode
@@ -24,6 +26,11 @@ export default function ChecklistItemComponent({
   const [notes, setNotes] = useState(item.notes || "");
   const [open, setOpen] = useState(false);
   const [imageURL, setImageURL] = useState<string | null>(null);
+  const [localLabel, setLocalLabel] = useState(item.label);
+
+  useEffect(() => {
+    setLocalLabel(item.label);
+  }, [item.label]);
 
   // Load image from IndexedDB
   useEffect(() => {
@@ -98,20 +105,31 @@ export default function ChecklistItemComponent({
           onChange={() => onToggle(item.id)}
         />
 
-        <div className="item-label" onClick={() => setOpen(!open)}>
-          <span className={item.checked ? "checked" : ""}>{item.label}</span>
-          <img
-            src={expandIcon}
-            alt="Expand"
-            className={`expand-icon ${open ? "open" : ""}`}
-          />
+        <div
+          className="item-label"
+          onClick={() => !editMode && setOpen(!open)}
+        >
+          {editMode ? (
+            <input
+              className="item-label-input"
+              value={localLabel}
+              onChange={(e) => setLocalLabel(e.target.value)}
+              onBlur={() => onLabelChange(item.id, localLabel)}
+              onKeyDown={(e) => e.key === "Enter" && onLabelChange(item.id, localLabel)}
+              onClick={(e) => e.stopPropagation()}
+            />
+          ) : (
+            <>
+              <span className={item.checked ? "checked" : ""}>{item.label}</span>
+              <img
+                src={expandIcon}
+                alt="Expand"
+                className={`expand-icon ${open ? "open" : ""}`}
+              />
+            </>
+          )}
         </div>
 
-        {editMode && (
-          <>
-            <input type="file" accept="image/*" onChange={handleFileChange} />
-          </>
-        )}        
 
         {editMode && (
           <button
@@ -127,16 +145,45 @@ export default function ChecklistItemComponent({
       {open && (
         <div className="item-details">
 
-          {/* LEFT SIDE — IMAGE */}
-          {imageURL && (
-            <div className="image-wrapper">
+          {/* LEFT SIDE — IMAGE WITH EDIT OVERLAY */}
+          <div className="image-wrapper">
+
+            {imageURL && (
               <img
                 src={imageURL}
                 alt="Attached"
-                className="attached-image"
+                className={`attached-image ${editMode ? "blurred" : ""}`}
               />
-            </div>
-          )}
+            )}
+
+            {/* Overlay upload button (only in edit mode) */}
+            {imageURL && editMode && (
+              <label className="image-upload-overlay">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  style={{ display: "none" }}
+                />
+                <div className="upload-text">
+                  + Upload / Replace Image
+                </div>
+              </label>
+            )}
+
+            {/* If no image at all */}
+            {!imageURL && (
+              <label className="image-upload-placeholder">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  style={{ display: "none" }}
+                />
+                <div className="upload-text">+ Upload Image</div>
+              </label>
+            )}
+          </div>
 
           {/* RIGHT SIDE — SCORE TABLE + NOTES */}
           <div className="details-right">

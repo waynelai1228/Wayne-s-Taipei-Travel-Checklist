@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useEffect } from "react";
 import itemsData from "./assets/items.json";
 import type { ScoreField, ChecklistItem } from "./types/ChecklistItem";
 import useLocalStorage from "./hooks/useLocalStorage";
@@ -6,27 +6,24 @@ import AddItemForm from "./components/AddItemForm";
 import ChecklistList from "./components/ChecklistList";
 import Header from "./components/Header";
 import "./App.css"
-import { normalizeScore } from "./utils/input_utils";
 import { clearAllImages, deleteImage } from "./utils/indexedDB";
 import { exportChecklist } from "./utils/export";
 import { importChecklist } from "./utils/import";
+
 export default function App() {
-  const initialItems: ChecklistItem[] = useMemo(() => {
-    return itemsData.map((i) => ({
-      ...i,
-      notes: i.notes ?? "",
-      scenicScore: normalizeScore(i.scenicScore),
-      romanceScore: normalizeScore(i.romanceScore),
-      educationalScore: normalizeScore(i.educationalScore),
-      convenienceScore: normalizeScore(i.convenienceScore),
-    }));
+  const [items, setItems] = useLocalStorage<ChecklistItem[]>("travel-checklist", []);
+
+  useEffect(() => {
+    async function loadDefault() {
+      const initialItems = await importChecklist(JSON.stringify(itemsData));
+      setItems(initialItems);
+    }
+
+    // Only load defaults if localStorage is empty
+    if (items.length === 0) {
+      loadDefault();
+    }
   }, []);
-
-
-  const [items, setItems] = useLocalStorage<ChecklistItem[]>(
-    "travel-checklist",
-    initialItems
-  );
 
   const [editMode, setEditMode] = useState(false);
   function addItem(label: string) {
@@ -65,10 +62,19 @@ export default function App() {
     // Clear the items state
     setItems([]);
   }
+  function changeLabel(id: number, newLabel: string) {
+    setItems((prev) =>
+      prev.map((item) =>
+        item.id === id ? { ...item, label: newLabel } : item
+      )
+    );
+  }
 
   function updateNotes(id: number, notes: string) {
     setItems((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, notes } : item))
+      prev.map((item) =>
+        (item.id === id ? { ...item, notes } : item)
+      )
     );
   }
 
@@ -125,7 +131,15 @@ export default function App() {
 
   async function resetDefault() {
     await clearAllImages();
-    setItems(initialItems);
+    const initialItems = await importChecklist(JSON.stringify(itemsData));
+
+    // Increment imageVersion for each item to force remount
+    const itemsWithVersion = initialItems.map(i => ({
+      ...i,
+      imageVersion: (i.imageVersion ?? 0) + 1,
+    }));
+
+    setItems(itemsWithVersion);
   }
 
   return (
@@ -166,6 +180,7 @@ export default function App() {
             items={items}
             onToggle={toggleItem}
             onDelete={deleteItem}
+            onLabelChange={changeLabel}
             onNotesChange={updateNotes}
             onScoreChange={updateScore}
             editMode={editMode}
