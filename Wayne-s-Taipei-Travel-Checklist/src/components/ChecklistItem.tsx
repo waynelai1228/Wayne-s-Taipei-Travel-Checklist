@@ -40,7 +40,7 @@ export default function ChecklistItemComponent({
     return () => {
       canceled = true;
     };
-  }, [item.imageVersion]); // <-- watch imageVersion
+  }, [item.id, item.imageVersion]); // <-- watch imageVersion
 
   async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -95,8 +95,7 @@ export default function ChecklistItemComponent({
         <input
           type="checkbox"
           checked={item.checked}
-          onChange={() => editMode && onToggle(item.id)}
-          disabled={!editMode}
+          onChange={() => onToggle(item.id)}
         />
 
         <div className="item-label" onClick={() => setOpen(!open)}>
