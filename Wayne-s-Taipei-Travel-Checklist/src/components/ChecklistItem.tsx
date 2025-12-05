@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { ScoreField, ChecklistItem } from "../types/ChecklistItem";
 import expandIcon from "../assets/expand_sign.svg";
-import { normalizeScore } from "../utils";
+import { normalizeScore } from "../utils/input_utils";
+import { saveImage, getImage } from "../utils/indexedDB";
 
 interface ChecklistItemProps {
   item: ChecklistItem;
@@ -22,6 +23,32 @@ export default function ChecklistItemComponent({
 }: ChecklistItemProps) {
   const [notes, setNotes] = useState(item.notes || "");
   const [open, setOpen] = useState(false);
+  const [imageURL, setImageURL] = useState<string | null>(null);
+
+  // Load image from IndexedDB
+  useEffect(() => {
+    let canceled = false;
+
+    getImage(item.id.toString()).then(blob => {
+      if (!canceled && blob) {
+        setImageURL(URL.createObjectURL(blob));
+      } else if (!canceled) {
+        setImageURL(null); // clear if no image
+      }
+    });
+
+    return () => {
+      canceled = true;
+    };
+  }, [item.imageVersion]); // <-- watch imageVersion
+
+  async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    await saveImage(item.id.toString(), file);
+    setImageURL(URL.createObjectURL(file));
+  }
 
   const scoreFields: [ScoreField, string][] = [
     ["scenicScore", "Scenic Score"],
@@ -82,6 +109,12 @@ export default function ChecklistItemComponent({
         </div>
 
         {editMode && (
+          <>
+            <input type="file" accept="image/*" onChange={handleFileChange} />
+          </>
+        )}        
+
+        {editMode && (
           <button
             className="delete-btn"
             aria-label="Delete item"
@@ -94,29 +127,45 @@ export default function ChecklistItemComponent({
 
       {open && (
         <div className="item-details">
-          <table className="score-table">
-            <tbody>
-              {scoreFields.map(([field, label]) => (
-                <tr key={field}>
-                  <td className="score-label">{label}</td>
-                  <td className="score-value">
-                    <ScoreInput field={field} value={item[field]} />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
 
-          <div className="notes-section">
-            <label className="notes-label">Notes:</label>
-            <textarea
-              className="notes-textarea"
-              value={notes}
-              onChange={handleNotesChange}
-              disabled={!editMode}
-              placeholder="Add notes..."
-            />
+          {/* LEFT SIDE — IMAGE */}
+          {imageURL && (
+            <div className="image-wrapper">
+              <img
+                src={imageURL}
+                alt="Attached"
+                className="attached-image"
+              />
+            </div>
+          )}
+
+          {/* RIGHT SIDE — SCORE TABLE + NOTES */}
+          <div className="details-right">
+            <table className="score-table">
+              <tbody>
+                {scoreFields.map(([field, label]) => (
+                  <tr key={field}>
+                    <td className="score-label">{label}</td>
+                    <td className="score-value">
+                      <ScoreInput field={field} value={item[field]} />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            <div className="notes-section">
+              <label className="notes-label">Notes:</label>
+              <textarea
+                className="notes-textarea"
+                value={notes}
+                onChange={handleNotesChange}
+                disabled={!editMode}
+                placeholder="Add notes..."
+              />
+            </div>
           </div>
+
         </div>
       )}
     </div>

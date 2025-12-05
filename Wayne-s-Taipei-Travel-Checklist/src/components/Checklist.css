@@ -138,16 +138,33 @@
     transform: rotate(180deg);
   }
 
-/* --- EXPANDED DETAILS --- */
 .item-details {
-  grid-area: details;
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
   margin-top: 12px;
-  padding: 12px;
-  background: #fafafa;
-  border-radius: 6px;
-  border-left: 3px solid #ccc;
-  width: 100%;
+  align-items: flex-start;
 }
+
+.image-wrapper {
+  flex-shrink: 0;
+}
+
+.attached-image {
+  width: 300px;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.details-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
 
 /* --- SCORE TABLE --- */
 .score-table {

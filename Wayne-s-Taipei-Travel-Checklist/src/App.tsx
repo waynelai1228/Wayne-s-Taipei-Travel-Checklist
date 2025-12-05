@@ -6,8 +6,10 @@ import AddItemForm from "./components/AddItemForm";
 import ChecklistList from "./components/ChecklistList";
 import Header from "./components/Header";
 import "./App.css"
-import { normalizeScore } from "./utils";
-
+import { normalizeScore } from "./utils/input_utils";
+import { clearAllImages, deleteImage } from "./utils/indexedDB";
+import { exportChecklist } from "./utils/export";
+import { importChecklist } from "./utils/import";
 export default function App() {
   const initialItems: ChecklistItem[] = useMemo(() => {
     return itemsData.map((i) => ({
@@ -51,13 +53,19 @@ export default function App() {
     );
   }
 
-  function deleteItem(id: number) {
+  async function deleteItem(id: number) {
+    await deleteImage(id.toString());
     setItems(items.filter((i) => i.id !== id));
   }
 
-  function clearAll() {
+  async function clearAll() {
+    // Delete all images from IndexedDB
+    await clearAllImages();
+
+    // Clear the items state
     setItems([]);
   }
+
   function updateNotes(id: number, notes: string) {
     setItems((prev) =>
       prev.map((item) => (item.id === id ? { ...item, notes } : item))
@@ -72,6 +80,9 @@ export default function App() {
     );
   }
 
+  // ----------------------------
+  // Import Function
+  // ----------------------------
   async function importItems() {
     try {
       const input = document.createElement("input");
@@ -82,26 +93,27 @@ export default function App() {
         const file = (event.target as HTMLInputElement).files?.[0];
         if (!file) return;
 
-        const text = await file.text();
-        let importedItems: Partial<ChecklistItem>[];
-
         try {
-          importedItems = JSON.parse(text);
-          setItems(importedItems);
-        } catch {
-          alert("Invalid JSON file format.");
-          return;
+          const text = await file.text();
+
+          const imported = await importChecklist(text);
+          setItems(imported);
+        } catch (err) {
+          alert("Failed to import checklist: " + err);
         }
-      }
+      };
+
       input.click();
     } catch (err) {
-      alert(getErrorMessage(err));
+      alert("Unexpected import error." + err);
     }
   }
 
-  function saveAsJson() {
-    const dataStr = JSON.stringify(items, null, 2); // pretty-print JSON
-    const blob = new Blob([dataStr], { type: "application/json" });
+  async function saveAsJson() {
+    const data = await exportChecklist(items);
+    const json = JSON.stringify(data, null, 2);
+
+    const blob = new Blob([json], { type: "application/json" });
     const url = URL.createObjectURL(blob);
 
     const a = document.createElement("a");
@@ -111,7 +123,8 @@ export default function App() {
     URL.revokeObjectURL(url);
   }
 
-  function resetDefault() {
+  async function resetDefault() {
+    await clearAllImages();
     setItems(initialItems);
   }
 

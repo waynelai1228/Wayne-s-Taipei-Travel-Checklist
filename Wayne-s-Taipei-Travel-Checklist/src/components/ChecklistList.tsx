@@ -1,4 +1,4 @@
-import type { ScoreField, ChecklistItem } from "./types/ChecklistItem";
+import type { ScoreField, ChecklistItem } from "../types/ChecklistItem";
 import ChecklistItemComponent from "./ChecklistItem";
 import './Checklist.css';
 
@@ -19,7 +19,7 @@ export default function ChecklistList(props: ChecklistListProps) {
     <div className="checklist-list">
       {items.map(item => (
         <ChecklistItemComponent
-          key={item.id}
+          key={`${item.id}-${item.imageVersion ?? 0}`} // force remount if version changes
           item={item}
           onToggle={onToggle}
           onDelete={onDelete}

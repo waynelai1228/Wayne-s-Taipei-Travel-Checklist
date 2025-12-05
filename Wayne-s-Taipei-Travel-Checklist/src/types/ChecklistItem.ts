@@ -7,6 +7,7 @@ export interface ChecklistItem {
   romanceScore: number;
   educationalScore: number;
   convenienceScore: number;
+  imageVersion?: number; // added for image reload
 }
 
 export type ScoreField =
