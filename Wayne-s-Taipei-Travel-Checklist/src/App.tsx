@@ -72,6 +72,33 @@ export default function App() {
     );
   }
 
+  async function importItems() {
+    try {
+      const input = document.createElement("input");
+      input.type = "file";
+      input.accept = "application/json";
+
+      input.onchange = async (event) => {
+        const file = (event.target as HTMLInputElement).files?.[0];
+        if (!file) return;
+
+        const text = await file.text();
+        let importedItems: Partial<ChecklistItem>[];
+
+        try {
+          importedItems = JSON.parse(text);
+          setItems(importedItems);
+        } catch {
+          alert("Invalid JSON file format.");
+          return;
+        }
+      }
+      input.click();
+    } catch (err) {
+      alert(getErrorMessage(err));
+    }
+  }
+
   function saveAsJson() {
     const dataStr = JSON.stringify(items, null, 2); // pretty-print JSON
     const blob = new Blob([dataStr], { type: "application/json" });
@@ -82,6 +109,10 @@ export default function App() {
     a.download = "checklist.json";
     a.click();
     URL.revokeObjectURL(url);
+  }
+
+  function resetDefault() {
+    setItems(initialItems);
   }
 
   return (
@@ -98,8 +129,16 @@ export default function App() {
               {editMode ? "Done Editing" : "Edit Checklist"}
             </button>
 
+            <button className="import-button" onClick={importItems}>
+              Import Items
+            </button>
+
             <button className="save-button" onClick={saveAsJson}>
               Save as JSON
+            </button>
+
+            <button className="reset-button" onClick={resetDefault}>
+              Reset to Default
             </button>
 
             {items.length > 0 && editMode && (

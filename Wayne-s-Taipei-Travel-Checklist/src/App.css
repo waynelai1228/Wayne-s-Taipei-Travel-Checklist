@@ -75,6 +75,7 @@ main {
     background-color: #7b1fa2;
   }
 
+/* Save button */
 .save-button {
   margin-left: 10px;
   padding: 6px 12px;
@@ -86,5 +87,35 @@ main {
 }
 
   .save-button:hover {
+    background-color: #1976d2;
+  }
+
+/* Import button */
+.import-button {
+  margin-left: 10px;
+  padding: 6px 12px;
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+  .import-button:hover {
+    background-color: #1976d2;
+  }
+
+/* Reset button */
+.reset-button {
+  margin-left: 10px;
+  padding: 6px 12px;
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+  .reset-button:hover {
     background-color: #1976d2;
   }
