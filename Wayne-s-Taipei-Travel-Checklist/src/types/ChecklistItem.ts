@@ -8,3 +8,9 @@ export interface ChecklistItem {
   educationalScore: number;
   convenienceScore: number;
 }
+
+export type ScoreField =
+  | "scenicScore"
+  | "romanceScore"
+  | "educationalScore"
+  | "convenienceScore";

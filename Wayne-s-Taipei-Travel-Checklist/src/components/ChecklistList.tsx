@@ -1,37 +1,33 @@
-import type { ChecklistItem } from "../types/ChecklistItem";
+import type { ScoreField, ChecklistItem } from "./types/ChecklistItem";
 import ChecklistItemComponent from "./ChecklistItem";
 import './Checklist.css';
+
 
 interface ChecklistListProps {
   items: ChecklistItem[];
   onToggle: (id: number) => void;
   onDelete: (id: number) => void;
   onNotesChange: (id: number, notes: string) => void;
+  onScoreChange: (id: number, field: ScoreField, value: number) => void;
   editMode: boolean;
 }
 
-export default function ChecklistList({
-  items,
-  onToggle,
-  onDelete,
-  onNotesChange,
-  editMode,
-}: ChecklistListProps) {
+export default function ChecklistList(props: ChecklistListProps) {
+  const { items, onToggle, onDelete, onNotesChange, onScoreChange, editMode } = props;
+
   return (
     <div className="checklist-list">
-      {items.length === 0 && <p>No items yet. Add something!</p>}
-
-      {items.map((item) => (
+      {items.map(item => (
         <ChecklistItemComponent
           key={item.id}
           item={item}
           onToggle={onToggle}
           onDelete={onDelete}
           onNotesChange={onNotesChange}
-          editMode={editMode}  // pass to item
+          onScoreChange={onScoreChange}
+          editMode={editMode}
         />
       ))}
     </div>
   );
 }
-

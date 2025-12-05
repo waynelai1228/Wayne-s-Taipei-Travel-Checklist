@@ -1,16 +1,18 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
-import './Checklist.css';
+import "./Checklist.css";
 
 interface AddItemFormProps {
   onAdd: (label: string) => void;
+  disabled?: boolean;
 }
 
-export default function AddItemForm({ onAdd }: AddItemFormProps) {
+export default function AddItemForm({ onAdd, disabled = false }: AddItemFormProps) {
   const [text, setText] = useState("");
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
+    if (disabled) return;
     if (!text.trim()) return;
 
     onAdd(text);
@@ -23,9 +25,10 @@ export default function AddItemForm({ onAdd }: AddItemFormProps) {
         type="text"
         placeholder="Add checklist item..."
         value={text}
+        disabled={disabled}
         onChange={(e) => setText(e.target.value)}
       />
-      <button>Add</button>
+      <button disabled={disabled}>Add</button>
     </form>
   );
 }

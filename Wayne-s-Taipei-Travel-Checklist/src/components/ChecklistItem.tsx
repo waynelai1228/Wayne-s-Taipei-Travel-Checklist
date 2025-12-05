@@ -1,13 +1,14 @@
 import { useState } from "react";
-import type { ChecklistItem } from "../types/ChecklistItem";
+import type { ScoreField, ChecklistItem } from "../types/ChecklistItem";
 import expandIcon from "../assets/expand_sign.svg";
-
+import { normalizeScore } from "../utils";
 
 interface ChecklistItemProps {
   item: ChecklistItem;
   onToggle: (id: number) => void;
   onDelete: (id: number) => void;
   onNotesChange: (id: number, notes: string) => void;
+  onScoreChange: (id: number, field: ScoreField, value: number) => void;
   editMode: boolean;
 }
 
@@ -16,15 +17,49 @@ export default function ChecklistItemComponent({
   onToggle,
   onDelete,
   onNotesChange,
-  editMode,
+  onScoreChange,
+  editMode
 }: ChecklistItemProps) {
   const [notes, setNotes] = useState(item.notes || "");
   const [open, setOpen] = useState(false);
+
+  const scoreFields: [ScoreField, string][] = [
+    ["scenicScore", "Scenic Score"],
+    ["romanceScore", "Romance Score"],
+    ["educationalScore", "Educational Score"],
+    ["convenienceScore", "Convenience Score"]
+  ];
 
   function handleNotesChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     const val = e.target.value;
     setNotes(val);
     onNotesChange(item.id, val);
+  }
+
+  // --- Inner component for each score input ---
+  function ScoreInput({ field, value }: { field: ScoreField; value: number }) {
+    const [inputValue, setInputValue] = useState(value.toString());
+
+    function commit() {
+      const num = normalizeScore(inputValue);
+      onScoreChange(item.id, field, num);
+      setInputValue(num.toString());
+    }
+
+    return editMode ? (
+      <input
+        type="number"
+        min={0}
+        max={10}
+        className="score-input"
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+        onBlur={commit}
+        onKeyDown={(e) => e.key === "Enter" && commit()}
+      />
+    ) : (
+      value
+    );
   }
 
   return (
@@ -33,8 +68,8 @@ export default function ChecklistItemComponent({
         <input
           type="checkbox"
           checked={item.checked}
-          onChange={() => onToggle(item.id)}
-          disabled={!editMode} // make read-only when not editing
+          onChange={() => editMode && onToggle(item.id)}
+          disabled={!editMode}
         />
 
         <div className="item-label" onClick={() => setOpen(!open)}>
@@ -47,7 +82,11 @@ export default function ChecklistItemComponent({
         </div>
 
         {editMode && (
-          <button className="delete-btn" onClick={() => onDelete(item.id)}>
+          <button
+            className="delete-btn"
+            aria-label="Delete item"
+            onClick={() => onDelete(item.id)}
+          >
             X
           </button>
         )}
@@ -57,22 +96,14 @@ export default function ChecklistItemComponent({
         <div className="item-details">
           <table className="score-table">
             <tbody>
-              <tr>
-                <td className="score-label">Scenic Score</td>
-                <td className="score-value">{item.scenicScore}</td>
-              </tr>
-              <tr>
-                <td className="score-label">Romance Score</td>
-                <td className="score-value">{item.romanceScore}</td>
-              </tr>
-              <tr>
-                <td className="score-label">Educational Score</td>
-                <td className="score-value">{item.educationalScore}</td>
-              </tr>
-              <tr>
-                <td className="score-label">Convenience Score</td>
-                <td className="score-value">{item.convenienceScore}</td>
-              </tr>
+              {scoreFields.map(([field, label]) => (
+                <tr key={field}>
+                  <td className="score-label">{label}</td>
+                  <td className="score-value">
+                    <ScoreInput field={field} value={item[field]} />
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
 
@@ -81,8 +112,8 @@ export default function ChecklistItemComponent({
             <textarea
               className="notes-textarea"
               value={notes}
-              onChange={(e) => editMode && handleNotesChange(e)}
-              disabled={!editMode} // read-only if not editing
+              onChange={handleNotesChange}
+              disabled={!editMode}
               placeholder="Add notes..."
             />
           </div>
@@ -91,4 +122,3 @@ export default function ChecklistItemComponent({
     </div>
   );
 }
-
