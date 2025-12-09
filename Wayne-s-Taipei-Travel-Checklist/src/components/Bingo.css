@@ -1,0 +1,85 @@
+/* Container around the Bingo feature */
+.bingo-container {
+  margin: 20px 0;
+  padding: 16px;
+  border-radius: 12px;
+  background: #f7f7f7;
+  border: 1px solid #ddd;
+}
+
+/* Header row: title on the left, button on the right */
+.bingo-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+  .bingo-header h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+
+/* Toggle button */
+.bingo-toggle {
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  background: #e0e0e0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+  .bingo-toggle:hover {
+    background: #d5d5d5;
+  }
+
+/* The bingo grid */
+.bingo-board {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0; /* No spacing between cells */
+  width: 100%;
+  max-width: 450px; /* Optional: limit max board width */
+  margin: 0 auto; /* Center the board */
+  border: 2px solid #999; /* Outer border */
+}
+
+/* Each individual cell */
+.bingo-cell {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1; /* Perfect square */
+  background: #fafafa;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+  /* When selected */
+  .bingo-cell.checked {
+    background: #7fc97f; /* green highlight */
+    border-color: #4a8f4a;
+    color: #fff;
+    font-weight: 600;
+  }
+
+/* Label text inside each cell */
+.bingo-label {
+  font-size: clamp(0.55rem, 1.4vw, 0.9rem);
+  padding: 4px;
+  text-align: center;
+  word-break: break-word;
+  line-height: 1.1;
+  pointer-events: none; /* ensures clicks hit the cell */
+}
+
+.bingo-cell.line {
+  background-color: gold;
+  border-color: darkorange;
+}

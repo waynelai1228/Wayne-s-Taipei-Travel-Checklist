@@ -109,6 +109,7 @@ export default function ChecklistItemComponent({
           className="item-label"
           onClick={() => !editMode && setOpen(!open)}
         >
+          {/* Item label stuff, edit item label stuff */ }
           {editMode ? (
             <input
               className="item-label-input"
@@ -121,13 +122,19 @@ export default function ChecklistItemComponent({
           ) : (
             <>
               <span className={item.checked ? "checked" : ""}>{item.label}</span>
-              <img
-                src={expandIcon}
-                alt="Expand"
-                className={`expand-icon ${open ? "open" : ""}`}
-              />
             </>
           )}
+
+          {/* Expand icon should *always* show, editMode or not */}
+          <img
+            src={expandIcon}
+            alt="Expand"
+            className={`expand-icon ${open ? "open" : ""}`}
+            onClick={(e) => {
+              e.stopPropagation(); // clicking icon only toggles expand
+              setOpen(!open);
+            }}
+          />
         </div>
 
 

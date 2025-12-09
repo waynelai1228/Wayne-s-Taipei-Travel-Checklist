@@ -9,6 +9,7 @@ import "./App.css"
 import { clearAllImages, deleteImage } from "./utils/indexedDB";
 import { exportChecklist } from "./utils/export";
 import { importChecklist } from "./utils/import";
+import Bingo from "./components/Bingo";
 
 export default function App() {
   const [items, setItems] = useLocalStorage<ChecklistItem[]>("travel-checklist", []);
@@ -23,7 +24,7 @@ export default function App() {
     if (items.length === 0) {
       loadDefault();
     }
-  }, []);
+  },[]);
 
   const [editMode, setEditMode] = useState(false);
   function addItem(label: string) {
@@ -148,6 +149,7 @@ export default function App() {
 
       <main>
         <div className="checklist-container">
+          <Bingo items={items} />
           <div className="controls">
             <button
               className={`edit-button ${editMode ? "active" : ""}`}
