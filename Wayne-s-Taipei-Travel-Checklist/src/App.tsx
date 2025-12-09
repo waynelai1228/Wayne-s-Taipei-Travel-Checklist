@@ -40,7 +40,7 @@ export default function App() {
       convenienceScore: 0
     };
 
-    setItems([...items, newItem]);
+    setItems([newItem, ...items]);
   }
 
   function toggleItem(id: number) {
